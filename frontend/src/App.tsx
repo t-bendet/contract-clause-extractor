@@ -158,6 +158,8 @@ function EmptyState({
 
 function Results({ response }: { response: ExtractResponse }) {
   const r = response.result;
+  // Optional in the schema (has a server-side default), so normalize once here.
+  const riskFlags = r.risk_flags ?? [];
   const fields: Array<[string, string]> = [
     ["Document type", r.document_type],
     ["Effective date", r.effective_date ?? "—"],
@@ -193,13 +195,13 @@ function Results({ response }: { response: ExtractResponse }) {
 
       <h3 className="risks-title">
         Risk flags
-        <span className="risks-count">{r.risk_flags.length}</span>
+        <span className="risks-count">{riskFlags.length}</span>
       </h3>
-      {r.risk_flags.length === 0 ? (
+      {riskFlags.length === 0 ? (
         <p className="hint">No risks flagged.</p>
       ) : (
         <ul className="risk-list">
-          {r.risk_flags.map((flag) => (
+          {riskFlags.map((flag) => (
             <RiskCard key={`${flag.clause_type}-${flag.quote}`} flag={flag} />
           ))}
         </ul>

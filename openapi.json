@@ -1,0 +1,324 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Contract Clause Extractor",
+    "description": "Extracts structured metadata and risk flags from contracts using Claude, with Pydantic-validated output.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Health Health Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/extract": {
+      "post": {
+        "summary": "Extract Contract",
+        "operationId": "extract_contract_extract_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ExtractRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 50,
+            "title": "Text",
+            "description": "Raw contract text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "ExtractRequest"
+      },
+      "ExtractResponse": {
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/ExtractionResult"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "retried": {
+            "type": "boolean",
+            "title": "Retried",
+            "description": "True if the first LLM response failed validation and was retried"
+          }
+        },
+        "type": "object",
+        "required": [
+          "result",
+          "model",
+          "retried"
+        ],
+        "title": "ExtractResponse"
+      },
+      "ExtractionResult": {
+        "properties": {
+          "document_type": {
+            "type": "string",
+            "title": "Document Type",
+            "description": "e.g. 'NDA', 'MSA', 'DPA'"
+          },
+          "parties": {
+            "items": {
+              "$ref": "#/components/schemas/Party"
+            },
+            "type": "array",
+            "title": "Parties"
+          },
+          "effective_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Effective Date",
+            "description": "ISO date if stated, else null"
+          },
+          "term": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Term",
+            "description": "Duration of the agreement as stated, e.g. '2 years'"
+          },
+          "governing_law": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Governing Law",
+            "description": "Jurisdiction, e.g. 'State of Delaware'"
+          },
+          "liability_cap": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Liability Cap",
+            "description": "Cap on liability if any, else null"
+          },
+          "auto_renewal": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Auto Renewal",
+            "description": "True if the contract auto-renews"
+          },
+          "confidentiality_period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidentiality Period",
+            "description": "How long confidentiality obligations survive"
+          },
+          "risk_flags": {
+            "items": {
+              "$ref": "#/components/schemas/RiskFlag"
+            },
+            "type": "array",
+            "title": "Risk Flags"
+          }
+        },
+        "type": "object",
+        "required": [
+          "document_type",
+          "parties"
+        ],
+        "title": "ExtractionResult",
+        "description": "Structured metadata extracted from a contract."
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Party": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "Legal name of the party"
+          },
+          "role": {
+            "type": "string",
+            "title": "Role",
+            "description": "Role in the agreement, e.g. 'Disclosing Party', 'Receiving Party', 'Vendor'"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "role"
+        ],
+        "title": "Party"
+      },
+      "RiskFlag": {
+        "properties": {
+          "clause_type": {
+            "type": "string",
+            "title": "Clause Type",
+            "description": "e.g. 'Liability', 'Non-compete', 'Auto-renewal'"
+          },
+          "quote": {
+            "type": "string",
+            "title": "Quote",
+            "description": "Short verbatim quote of the problematic language"
+          },
+          "risk_level": {
+            "$ref": "#/components/schemas/RiskLevel"
+          },
+          "rationale": {
+            "type": "string",
+            "title": "Rationale",
+            "description": "One-sentence explanation of why this is flagged"
+          }
+        },
+        "type": "object",
+        "required": [
+          "clause_type",
+          "quote",
+          "risk_level",
+          "rationale"
+        ],
+        "title": "RiskFlag"
+      },
+      "RiskLevel": {
+        "type": "string",
+        "enum": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "title": "RiskLevel"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

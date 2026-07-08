@@ -1,35 +1,14 @@
-// TypeScript mirrors of the backend's Pydantic models (app/models.py).
-// Same shapes on both sides of the wire — Pydantic validates on the way out,
-// these types keep the UI honest on the way in.
+// Friendly aliases over the generated OpenAPI types (src/generated/api.d.ts).
+//
+// The generated file comes from the backend's OpenAPI schema, which FastAPI
+// derives from the Pydantic models — so app/models.py is the single source
+// of truth for both runtime validation (backend) and these compile-time
+// types (frontend). Regenerate after backend changes: `pnpm gen:types`.
 
-export type RiskLevel = "low" | "medium" | "high";
+import type { components } from "./generated/api";
 
-export interface Party {
-  name: string;
-  role: string;
-}
-
-export interface RiskFlag {
-  clause_type: string;
-  quote: string;
-  risk_level: RiskLevel;
-  rationale: string;
-}
-
-export interface ExtractionResult {
-  document_type: string;
-  parties: Party[];
-  effective_date: string | null;
-  term: string | null;
-  governing_law: string | null;
-  liability_cap: string | null;
-  auto_renewal: boolean | null;
-  confidentiality_period: string | null;
-  risk_flags: RiskFlag[];
-}
-
-export interface ExtractResponse {
-  result: ExtractionResult;
-  model: string;
-  retried: boolean;
-}
+export type ExtractionResult = components["schemas"]["ExtractionResult"];
+export type ExtractResponse = components["schemas"]["ExtractResponse"];
+export type Party = components["schemas"]["Party"];
+export type RiskFlag = components["schemas"]["RiskFlag"];
+export type RiskLevel = components["schemas"]["RiskLevel"];
