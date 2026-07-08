@@ -1,0 +1,13 @@
+{
+  "name": "clause-extractor",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "start": "concurrently -n api,web -c blue,magenta --kill-others \"pnpm start:api\" \"pnpm start:web\"",
+    "start:api": ".venv/bin/uvicorn app.main:app --reload --port 8000",
+    "start:web": "pnpm --dir frontend dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

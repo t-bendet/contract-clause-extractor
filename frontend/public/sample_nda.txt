@@ -1,0 +1,51 @@
+MUTUAL NON-DISCLOSURE AGREEMENT
+
+This Mutual Non-Disclosure Agreement (the "Agreement") is entered into as of
+January 15, 2026 (the "Effective Date") by and between Acme Corp, a Delaware
+corporation with offices at 100 Market Street, San Francisco, CA ("Acme"),
+and Beta Ltd, an Israeli company with offices at 12 Rothschild Blvd, Tel Aviv
+("Beta"). Each party may act as a Disclosing Party or Receiving Party.
+
+1. PURPOSE. The parties wish to explore a potential business relationship
+concerning AI-powered contract analysis (the "Purpose") and may disclose
+Confidential Information to each other in connection with the Purpose.
+
+2. CONFIDENTIAL INFORMATION. "Confidential Information" means any information
+disclosed by one party to the other, whether orally, in writing, or by
+inspection, that is designated as confidential or that reasonably should be
+understood to be confidential given the nature of the information.
+
+3. OBLIGATIONS. The Receiving Party shall: (a) use Confidential Information
+solely for the Purpose; (b) not disclose Confidential Information to any third
+party without prior written consent; and (c) protect Confidential Information
+with at least the same degree of care it uses for its own confidential
+information, and in no event less than reasonable care.
+
+4. TERM. This Agreement shall commence on the Effective Date and continue for
+a period of two (2) years, and shall automatically renew for successive
+one-year periods unless either party provides written notice of non-renewal
+at least sixty (60) days prior to the end of the then-current term.
+
+5. SURVIVAL. The confidentiality obligations set forth herein shall survive
+termination of this Agreement for a period of five (5) years.
+
+6. LIABILITY. Notwithstanding anything to the contrary, each party shall be
+liable for all damages arising hereunder, whether direct, indirect,
+incidental, or consequential.
+
+7. NON-SOLICITATION. During the term of this Agreement and for eighteen (18)
+months thereafter, neither party shall solicit for employment any employee of
+the other party with whom it had contact in connection with the Purpose.
+
+8. GOVERNING LAW. This Agreement shall be governed by and construed in
+accordance with the laws of the State of Delaware, without regard to its
+conflict of laws principles.
+
+9. NO LICENSE. Nothing in this Agreement grants any rights under any patent,
+copyright, or other intellectual property right of the Disclosing Party.
+
+IN WITNESS WHEREOF, the parties have executed this Agreement as of the
+Effective Date.
+
+ACME CORP                          BETA LTD
+By: Jane Smith, VP Legal           By: David Cohen, CEO
