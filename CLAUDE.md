@@ -17,6 +17,12 @@ pnpm install && pnpm --dir frontend install
 cp .env.example .env   # then paste ANTHROPIC_API_KEY into .env
 ```
 
+`.venv` bakes in the absolute path it was created at (shebang lines, `activate` scripts), so it breaks silently if the repo folder is moved or renamed. If that happens, recreate it — don't try to patch the paths by hand:
+
+```bash
+rm -rf .venv && python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+```
+
 Run both servers (backend :8000 + frontend :5173) from repo root:
 
 ```bash
